@@ -1,0 +1,89 @@
+---
+import Footer from "@/components/partials/Footer.astro"
+import Header from "@/components/partials/Header.astro"
+import SEOHead from "@/components/SEOHead.astro"
+
+import "@/styles/tailwind.css"
+
+interface Props {
+	title: string
+	description: string
+	ogImage: any | string
+	noIndex?: boolean
+	name?: string
+	author?: string
+	type?: boolean
+	locale?: string
+	noManifest?: boolean
+	datePublished?: string | any
+	dateModified?: string | any
+	canonicalURL?: any | string
+	container_max_w?: any
+}
+const {
+	datePublished,
+	dateModified,
+	noIndex,
+	name,
+	noManifest,
+	author,
+	title,
+	type,
+	description,
+	ogImage,
+	locale,
+	container_max_w,
+	canonicalURL = new URL(Astro.url.pathname, Astro.site),
+} = Astro.props
+---
+
+<!-- DARKMODE ON -->
+<script is:inline>
+	const getThemePreference = () => {
+		if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+			return localStorage.getItem("theme")
+		}
+		return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+	}
+	const isDark = getThemePreference() === "dark"
+	document.documentElement.classList[isDark ? "add" : "remove"]("dark")
+
+	if (typeof localStorage !== "undefined") {
+		const observer = new MutationObserver(() => {
+			const isDark = document.documentElement.classList.contains("dark")
+			localStorage.setItem("theme", isDark ? "dark" : "light")
+		})
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ["class"],
+		})
+	}
+</script>
+
+<html lang="ru" class="scroll-smooth">
+	<head>
+		<SEOHead
+			noManifest
+			noIndex={noIndex}
+			title={title}
+			description={description}
+			name={name}
+			author={author}
+			type={type}
+			locale={locale}
+			ogImage={ogImage}
+			datePublished={datePublished}
+			dateModified={dateModified}
+			canonicalURL={canonicalURL}
+		/>
+	</head>
+	<body class="flex min-h-screen flex-col text-black bg-white">
+		<Header />
+		<main class:list={`${container_max_w ?? "max-w-6xl"} container mx-auto flex-1 px-5`}>
+			<div class="flex flex-col gap-12 py-12">
+				<slot />
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>

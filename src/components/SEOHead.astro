@@ -1,0 +1,119 @@
+---
+import Favicons from "@/components/Favicons.astro"
+import { config } from "@/settings"
+const {
+	datePublished,
+	indexRobots,
+	name,
+	noManifest,
+	author,
+	title,
+	type,
+	description,
+	ogImage,
+	locale,
+	canonicalURL = new URL(Astro.url.pathname, Astro.site),
+} = Astro.props
+
+const socialImageURL = new URL(
+	ogImage ? ogImage : `/${config.site.OG.defaultImage}`,
+	Astro.url,
+).href
+
+function formatCanonicalURL(url: string | URL) {
+	const path = url.toString()
+	const hasQueryParams = path.includes("?")
+	if (hasQueryParams) {
+		path.replace(/\/?$/, "")
+	}
+	return path.replace(/\/?$/, hasQueryParams ? "" : "/")
+}
+
+const finalTitle = title || config.site.OG.title
+const finalDescription = description || config.site.OG.description
+const finalAuthor = author || config.site.OG.author
+const finalOGImage = socialImageURL || config.site.OG.defaultImage
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="generator" content={Astro.generator} />
+
+{canonicalURL && <link rel="canonical" href={formatCanonicalURL(canonicalURL)} />}
+
+<title>{finalTitle}</title>
+
+<meta name="title" content={finalTitle} />
+<meta name="description" content={finalDescription} />
+<meta name="author" content={finalAuthor} />
+
+<meta property="og:type" content={type ? "article" : "website"} />
+{canonicalURL && <meta property="og:url" content={formatCanonicalURL(canonicalURL)} />}
+<meta property="og:title" content={finalTitle} />
+<meta property="og:description" content={finalDescription} />
+
+<meta property="og:image" content={finalOGImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta property="og:locale" content={locale || config.site.OG.locale} />
+<meta property="og:site_name" content={name || config.site.OG.site_name} />
+
+{
+	type && (
+		<>
+			<meta property="article:author" content={finalAuthor} />
+			<meta property="article:published_time" content={datePublished} />
+		</>
+	)
+}
+
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={formatCanonicalURL(canonicalURL)} />
+<meta property="twitter:title" content={finalTitle} />
+<meta property="twitter:description" content={finalDescription} />
+<meta property="twitter:image" content={finalOGImage} />
+
+{
+	indexRobots ? (
+		<meta name="robots" content="index, follow" />
+	) : (
+		<meta name="robots" content="noindex, nofollow" />
+	)
+}
+
+<link type="text/plain" rel="author" href={`${Astro.site}humans.txt`} />
+<link
+	rel="alternate"
+	type="application/rss+xml"
+	title="RSS"
+	href={`${Astro.site}rss.xml`}
+/>
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+{
+	config.verifications.yandex && (
+		<meta name="yandex-verification" content={config.verifications.yandex} />
+	)
+}
+{
+	config.verifications.google && (
+		<meta name="google-site-verification" content={config.verifications.google} />
+	)
+}
+{
+	config.verifications.bing && (
+		<meta name="msvalidate.01" content={config.verifications.bing} />
+	)
+}
+
+{
+	noManifest ? null : (
+		<>
+			<Favicons />
+			<script is:inline src="/registerSW.js" />
+			<link rel="manifest" href="/manifest.webmanifest" />
+		</>
+	)
+}
