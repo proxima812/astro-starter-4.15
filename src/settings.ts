@@ -13,9 +13,9 @@ export const config = {
 		},
 	},
 	verifications: {
-		yandex: "111",
-		google: "222",
-		bing: "333",
+		yandex: "",
+		google: "",
+		bing: "",
 		// ...
 	},
 	manifest: {

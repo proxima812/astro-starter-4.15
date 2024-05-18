@@ -1,4 +1,4 @@
-# astro starter 4.5 minimal
+# astro starter 4.8 minimal
 
 _стартер буду дорабатывать по мере понимая, чего нужно или чего убрать._
 
@@ -11,21 +11,60 @@ _стартер буду дорабатывать по мере понимая, 
 - astro-compress
 - PWA
 
+## Если НЕ нужен darkMode удали в двух местах.
+
+**@/layouts/MainLayout.astro**
+
+```html
+<!-- DARKMODE ON -->
+<script is:inline>
+	const getThemePreference = () => {
+		if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+			return localStorage.getItem("theme")
+		}
+		return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+	}
+	const isDark = getThemePreference() === "dark"
+	document.documentElement.classList[isDark ? "add" : "remove"]("dark")
+
+	if (typeof localStorage !== "undefined") {
+		const observer = new MutationObserver(() => {
+			const isDark = document.documentElement.classList.contains("dark")
+			localStorage.setItem("theme", isDark ? "dark" : "light")
+		})
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ["class"],
+		})
+	}
+</script>
+```
+
+**/tailwind.config.mjs**
+
+- darkMode: "class",
+
+```mjs
+/** @type {import('tailwindcss').Config} */
+export default {
+	content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+	darkMode: "class",
+	theme: {
+		extend: {},
+	},
+	plugins: [require("@tailwindcss/typography")],
+}
+
+```
+
 ## Необходимые настройки
 
 - в settings.ts
 
-## Если не хочешь manifest в проекте
 
-**Это в /layouts/MainLayout.astro**
+## Если НЕ нужен PWA удали перед npm i и в package.json
 
-```astro
-<SEOHead
-  noManifest
-/>
-```
-
-**Также в astro.config.mjs - убираешь vite**
+**В astro.config.mjs - убираешь vite**
 
 ```mjs
 	vite: {
@@ -67,44 +106,3 @@ const items = defineCollection({
 	},
 })
 ```
-
-## Структура проекта
-
-```md
-├── astro.config.mjs
-├── package-lock.json
-├── package.json
-├── public
-│ ├── favicon.svg
-│ └── favicons
-│ └── icons
-├── src
-│ ├── assets
-│ ├── components
-│ │ ├── Favicons.astro
-│ │ ├── SEOHead.astro
-│ │ └── partials
-│ │ ├── Footer.astro
-│ │ └── Header.astro
-│ ├── content
-│ │ ├── config.ts
-│ │ └── items
-│ │ └── item.md
-│ ├── data
-│ ├── env.d.ts
-│ ├── layouts
-│ │ └── MainLayout.astro
-│ ├── pages
-│ │ ├── index.astro
-│ │ ├── robots.txt.ts
-│ │ └── rss.xml.js
-│ ├── settings.ts
-│ ├── styles
-│ │ └── tailwind.css
-│ └── utils
-│ ├── libs
-│ └── manifest.ts
-├── tailwind.config.mjs
-└── tsconfig.json
-```
-# astro-starter-4.5

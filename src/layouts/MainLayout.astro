@@ -14,7 +14,6 @@ interface Props {
 	author?: string
 	type?: boolean
 	locale?: string
-	noManifest?: boolean
 	datePublished?: string | any
 	dateModified?: string | any
 	canonicalURL?: any | string
@@ -25,7 +24,6 @@ const {
 	dateModified,
 	noIndex,
 	name,
-	noManifest,
 	author,
 	title,
 	type,
@@ -63,7 +61,6 @@ const {
 <html lang="ru" class="scroll-smooth">
 	<head>
 		<SEOHead
-			noManifest
 			noIndex={noIndex}
 			title={title}
 			description={description}

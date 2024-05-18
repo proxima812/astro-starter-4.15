@@ -5,7 +5,6 @@ const {
 	datePublished,
 	indexRobots,
 	name,
-	noManifest,
 	author,
 	title,
 	type,
@@ -46,10 +45,11 @@ const finalOGImage = socialImageURL || config.site.OG.defaultImage
 
 <meta name="title" content={finalTitle} />
 <meta name="description" content={finalDescription} />
-<meta name="author" content={finalAuthor} />
+{finalAuthor && <meta name="author" content={finalAuthor} />}
 
 <meta property="og:type" content={type ? "article" : "website"} />
 {canonicalURL && <meta property="og:url" content={formatCanonicalURL(canonicalURL)} />}
+
 <meta property="og:title" content={finalTitle} />
 <meta property="og:description" content={finalDescription} />
 
@@ -57,8 +57,18 @@ const finalOGImage = socialImageURL || config.site.OG.defaultImage
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 
-<meta property="og:locale" content={locale || config.site.OG.locale} />
-<meta property="og:site_name" content={name || config.site.OG.site_name} />
+{
+	locale ||
+		(config.site.OG.locale && (
+			<meta property="og:locale" content={locale || config.site.OG.locale} />
+		))
+}
+{
+	name ||
+		(config.site.OG.site_name && (
+			<meta property="og:site_name" content={name || config.site.OG.site_name} />
+		))
+}
 
 {
 	type && (
@@ -69,6 +79,7 @@ const finalOGImage = socialImageURL || config.site.OG.defaultImage
 	)
 }
 
+<!-- Твиттер - X. Смысла нет, есил проект делать для терреториях РФ -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={formatCanonicalURL(canonicalURL)} />
 <meta property="twitter:title" content={finalTitle} />
@@ -82,14 +93,17 @@ const finalOGImage = socialImageURL || config.site.OG.defaultImage
 		<meta name="robots" content="noindex, nofollow" />
 	)
 }
-
+<!-- Это robots.txt но для людей humnas.txt  -->
 <link type="text/plain" rel="author" href={`${Astro.site}humans.txt`} />
+
+<!-- RSS лента-->
 <link
 	rel="alternate"
 	type="application/rss+xml"
 	title="RSS"
 	href={`${Astro.site}rss.xml`}
 />
+<!-- Карта сайта sitemap.xml -->
 <link rel="sitemap" href="/sitemap-index.xml" />
 
 {
@@ -108,12 +122,7 @@ const finalOGImage = socialImageURL || config.site.OG.defaultImage
 	)
 }
 
-{
-	noManifest ? null : (
-		<>
-			<Favicons />
-			<script is:inline src="/registerSW.js" />
-			<link rel="manifest" href="/manifest.webmanifest" />
-		</>
-	)
-}
+<!-- Если есть PWA, а так удали -->
+<Favicons />
+<script is:inline src="/registerSW.js"></script>
+<link rel="manifest" href="/manifest.webmanifest" />
