@@ -1,0 +1,63 @@
+---
+import { getCollection } from "astro:content"
+
+const { pathname } = new URL(Astro.request.url)
+const segments = pathname.split("/").filter(Boolean)
+
+// Define a mapping of segment names to breadcrumb titles
+const breadcrumbMap = {
+	posts: "Посты",
+	categories: "Категории",
+	tags: "Теги",
+	authors: "Авторы",
+	// Add other mappings here if needed
+}
+
+// Fetch data from the collection
+const posts = await getCollection("posts")
+const currentPostSlug = segments[segments.length - 1]
+const currentPost = posts.find(post => post.slug === currentPostSlug)
+
+const breadcrumbs = [
+	"Главная",
+	...segments.map((segment, index) => {
+		if (index === segments.length - 1 && currentPost) {
+			return currentPost.data.title
+		}
+		const mappedSegment =
+			breadcrumbMap[segment.toLowerCase()] || segment.replace(/-/g, " ")
+		return mappedSegment
+	}),
+]
+---
+
+<nav aria-label="Breadcrumb">
+	<ol class="inline-flex items-center gap-1">
+		{
+			breadcrumbs.map((segment, index) => (
+				<li class="flex items-center gap-2 [&:not(:first-child):not(:last-child)]:hidden [&:not(:first-child):not(:last-child)]:md:flex ">
+					<a
+						href={`/${segments.slice(0, index).join("/")}`}
+						class="flex items-center gap-1"
+					>
+						{index === 0 ? segment : segment}
+					</a>
+					{index < breadcrumbs.length - 1 && (
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-3 w-3 flex-none stroke-black transition-transform md:rotate-180"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="1.5"
+							aria-hidden="true"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+						</svg>
+					)}
+				</li>
+			))
+		}
+	</ol>
+</nav>
+
