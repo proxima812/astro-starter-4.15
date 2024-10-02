@@ -1,72 +1,3 @@
-# Astro.js 4.15
-
-- vitePWA 
-
-Есть **_netlify.toml** и **_vercel.json** для деплоя с PWA **(убрать перед _)**
-
-- React + Framer-motion для **Nav.jsx**
-
-## Самое главное - фильрация по: тегам, категориям
-
-- всего 3 .ts файла
-
-**getAllPosts.ts**
-
-```ts
-import { getCollection } from "astro:content"
-import { slugify } from './libs/utils'
-// Вывод постов по новым датам и по статусу draft
-export const getAllPosts = async content => {
-	const posts = (await getCollection(content))
-		.filter(({ data }) => (import.meta.env.PROD ? data.draft !== true : true))
-		// "2024-02-21T15:30:00Z"
-		//	datePublished: z.union([z.string().datetime(), z.date()]),
-		.sort((a, b) => +new Date(b.data.datePublished) - +new Date(a.data.datePublished))
-	return posts
-}
-```
-
-**getTaxonomy.ts**
-
-```ts
-import { getAllPosts } from "./getPosts"
-// Функция для получения всех таксономий
-const getTaxonomy = async (collection, name) => {
-	const singlePages = await getAllPosts(collection)
-	let taxonomies = []
-	// Сбор всех таксономий из постов
-	singlePages.forEach(page => {
-		const categoryArray = page.data[name] // Получаем массив категорий из каждого поста
-		if (Array.isArray(categoryArray)) {
-			// Проверяем, является ли это массивом
-			categoryArray.forEach(category => {
-				// Добавляем слаг в массив
-				taxonomies.push((category)) // Используем slugify для нормализации
-			})
-		}
-	})
-	// Удаляем дубликаты с помощью Set
-	const uniqueTaxonomies = [...new Set(taxonomies)]
-	return uniqueTaxonomies
-}
-export default getTaxonomy
-```
-
-**taxonomyFilter.ts**
-
-```ts
-import { slugify } from './libs/utils'
-const taxonomyFilter = (posts: any[], name: string, key: any) =>
-	posts.filter(post =>
-		post.data[name].map((name: string) => slugify(name)).includes(key),
-	)
-export default taxonomyFilter
-```
-
-## slugify и slugifyReverse (с рус. на англ. и наоборот, но без учета "ь")
-
-
-```ts
 export function slugify(input) {
 	if (!input) return ""
 
@@ -193,5 +124,3 @@ export function slugifyReverse(input) {
 	// Соединяем слова обратно с пробелами
 	return translatedWords.join(" ")
 }
-
-```

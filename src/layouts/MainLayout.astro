@@ -5,20 +5,6 @@ import SEOHead from "@/components/SEOHead.astro"
 
 import "@/styles/tailwind.css"
 
-interface Props {
-	title: string
-	description: string
-	ogImage: any | string
-	noIndex?: boolean
-	name?: string
-	author?: string
-	type?: boolean
-	locale?: string
-	datePublished?: string | any
-	dateModified?: string | any
-	canonicalURL?: any | string
-	container_max_w?: any
-}
 const {
 	datePublished,
 	dateModified,
@@ -74,9 +60,13 @@ const {
 			canonicalURL={canonicalURL}
 		/>
 	</head>
-	<body class="flex min-h-screen flex-col text-black bg-white">
-		<Header />
+	<body class="relative flex min-h-screen flex-col text-black bg-white">
+		<Header container_max_w="max-w-4xl"/>
+
 		<main class:list={`${container_max_w ?? "max-w-6xl"} container mx-auto flex-1 px-5`}>
+
+      <a href="/" class="text-red-500 text-4xl">На главную</a>
+
 			<div class="flex flex-col gap-12 py-12">
 				<slot />
 			</div>

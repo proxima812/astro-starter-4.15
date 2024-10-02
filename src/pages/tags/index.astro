@@ -1,0 +1,22 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro"
+import getTaxonomy from "@/utils/getTaxonomy"
+import { slugify } from "@/utils/libs/utils"
+
+const tags = await getTaxonomy("posts", "tags")
+
+const title = `все теги: ${tags.join(", ")}`
+---
+
+<MainLayout title={title} description="">
+	<ul>
+		{
+			tags &&
+				tags.map(tag => (
+					<li>
+						<a href={`/tags/${slugify(tag)}`}>{tag}</a>
+					</li>
+				))
+		}
+	</ul>
+</MainLayout>

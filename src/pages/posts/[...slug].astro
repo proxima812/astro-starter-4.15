@@ -1,0 +1,26 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro"
+import { getAllPosts } from "@/utils/getPosts"
+
+export async function getStaticPaths() {
+	const posts = await getAllPosts("posts")
+	const postCount = posts.length
+	return posts.map((post, index) => ({
+		params: { slug: post.slug },
+		props: {
+			post,
+			prevPost: index + 1 !== postCount ? posts[index + 1] : null,
+			nextPost: index !== 0 ? posts[index - 1] : null,
+		},
+	}))
+}
+
+const { post } = Astro.props
+const { Content } = await post.render()
+---
+
+<MainLayout>
+  <h1 class="text-6xl font-black trac">{post.data.title}</h1>
+  <p>{post.data.description}</p>
+	<Content />
+</MainLayout>

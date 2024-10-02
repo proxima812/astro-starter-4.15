@@ -1,32 +1,16 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro"
-import { getCollection } from "astro:content"
+import { getAllPosts } from "@/utils/getPosts"
 
-let now = new Date()
-
-const items = (await getCollection("items"))
-	.filter(({ data }) => (import.meta.env.PROD ? data.draft !== true : true))
-	.sort((a, b) => +new Date(b.data.datePublished) - +new Date(a.data.datePublished))
+const posts = await getAllPosts("posts")
 ---
 
-<MainLayout
-	title="заголовок"
-	description="описание descroption"
-	noIndex
-	author="Мудак"
-	datePublished={now}
-	locale="UA"
-	ogImage={"../assets/suka.pong"}
-	dateModified="нету"
->
-	{
-		items &&
-			items.map(item => (
-				<article>
-					<h2>{item.data.title}</h2>
-					<p>{item.data.description}</p>
-					<span>{item.data.datePublished}</span>
-				</article>
-			))
-	}
+<MainLayout>
+	<h1 class="text-6xl font-black tracking-tighter">
+		Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti, vitae.
+	</h1>
+
+	<a href="/posts">Все посты</a>
+	<a href="/categories">Все категории</a>
+	<a href="/tags">Все теги</a>
 </MainLayout>

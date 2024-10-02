@@ -1,0 +1,21 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro"
+import getTaxonomy from "@/utils/getTaxonomy"
+import { slugify } from "@/utils/libs/utils"
+
+const categories = await getTaxonomy("posts", "categories")
+const title = `все категории: ${categories.join(", ")}`
+---
+
+<MainLayout title={title} description="">
+	<ul>
+		{
+			categories &&
+				categories.map(category => (
+					<li>
+						<a href={`/categories/${slugify(category)}`}>{category}</a>
+					</li>
+				))
+		}
+	</ul>
+</MainLayout>

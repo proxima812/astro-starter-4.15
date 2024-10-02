@@ -1,4 +1,4 @@
-import { config } from "../settings"
+import { config } from "../../settings"
 
 export const manifest = {
 	name: config.site.OG.site_name,

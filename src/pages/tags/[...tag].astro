@@ -1,0 +1,28 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro"
+import { getAllPosts } from "@/utils/getPosts"
+import getTaxonomy from "@/utils/getTaxonomy"
+import { slugify, slugifyReverse } from "@/utils/libs/utils"
+import taxonomyFilter from "@/utils/taxonomyFilter"
+
+export async function getStaticPaths() {
+	const categories = await getTaxonomy("posts", "tags")
+
+	return categories.map(tag => {
+		return {
+			params: { tag: slugify(tag) },
+		}
+	})
+}
+
+const { tag } = Astro.params
+
+const posts = await getAllPosts("posts")
+const filterByTags = taxonomyFilter(posts, "categories", tag)
+
+const title = `Постов по тегам: ${slugifyReverse(tag)} (${filterByTags.length})`
+---
+
+<MainLayout title={title} description="">
+	{filterByTags.map(post => <a href={`/posts/${post.slug}`}>{post.data.title}</a>)}
+</MainLayout>

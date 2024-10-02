@@ -1,0 +1,18 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro"
+import { getAllPosts } from "@/utils/getPosts"
+
+const posts = await getAllPosts("posts")
+---
+
+<MainLayout title="" description="">
+	{
+		posts &&
+			posts.map(post => (
+				<a href={`/posts/${post.slug}`}>
+					<h2>{post.data.title}</h2>
+					<p>{post.data.description}</p>
+				</a>
+			))
+	}
+</MainLayout>
