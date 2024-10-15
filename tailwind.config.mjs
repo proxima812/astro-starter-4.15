@@ -4,6 +4,17 @@ export default {
 	darkMode: "class",
 	theme: {
 		extend: {
+			fontFamily: {
+				sans: [
+					"-apple-system",
+					"BlinkMacSystemFont",
+					'"SF Pro Text"',
+					'"SF Pro Display"',
+					"Roboto",
+					"Arial",
+					"sans-serif",
+				],
+			},
 			colors: {
 				dark: "#000",
 				light: "#fff",

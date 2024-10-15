@@ -1,0 +1,49 @@
+---
+import { Icon } from "astro-icon/components"
+const { data, slug } = Astro.props
+---
+
+<article
+	aria-label={data.title}
+	class="hover:bg-zinc-800/60 ease-linear transition-colors p-6 rounded-xl bg-zinc-900 ring-1 ring-zinc-800 relative flex flex-col gap-3"
+>
+	<span class="absolute top-4 right-4"><Icon name="mdi:account-group" /></span>
+	<h3 class="font-bold">{data.title}</h3>
+
+	<div>
+		<div class="flex items-center gap-1">
+			<Icon name="mdi:arrow-top-right" />
+			<span>Формат:</span>
+		</div>
+		<p class="text-zinc-400">{data.format}</p>
+	</div>
+
+	<div>
+		<div class="flex items-center gap-1">
+			<Icon name="mdi:clock" />
+			<span>Время:</span>
+		</div>
+		<p class="text-zinc-400">{data.time}</p>
+	</div>
+
+	<div>
+		<div class="flex items-center gap-1">
+			<Icon name="mdi:account-arrow-right" />
+			<span>Ведущий(-ая)</span>
+		</div>
+		<p class="text-zinc-400">{data.author}</p>
+	</div>
+
+	<p class="text-zinc-400">
+		{data.description}
+	</p>
+
+	<a
+		target="_blank"
+		href={data.link}
+		class="py-2 px-4 hover:bg-green-400/10 transition-colors ease-linear hover:text-green-600 text-green-700 flex w-full justify-center items-center gap-1 bg-green-600/10 rounded-lg"
+	>
+		<span>Присоединиться</span>
+		<Icon name="mdi:arrow-top-right" />
+	</a>
+</article>

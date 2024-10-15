@@ -1,0 +1,37 @@
+---
+import { Icon } from "astro-icon/components"
+const list = [
+	{
+		mdi: "mdi:abugida-thai",
+		label: "12 шагов",
+	},
+	{
+		mdi: "mdi:account-multiple",
+		label: "Группы",
+	},
+	{
+		mdi: "mdi:bookshelf",
+		label: "Материалы",
+	},
+	{
+		mdi: "mdi:access-point",
+		label: "Поддержка",
+	},
+	{
+		mdi: "mdi:share-all",
+		label: "Обратная связь",
+	},
+]
+---
+
+<div class="justify-center mt-6 mx-auto flex flex-wrap gap-6 items-center">
+	{
+		list &&
+			list.map(item => (
+				<div class="flex items-center shadow shadow-white gap-1 bg-white/20 px-4 py-2 rounded-md ring-1 ring-white text-white">
+					<Icon name={item.mdi} />
+					<span class="font-bold text-sm"> {item.label}</span>
+				</div>
+			))
+	}
+</div>

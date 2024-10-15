@@ -1,0 +1,27 @@
+---
+import SEOHead from "@/components/SEOHead.astro"
+
+import "@/styles/tailwind.css"
+
+const { datePublished, dateModified, noIndex, title, type, description, ogImage } =
+	Astro.props
+---
+
+<html lang="ru" class="scroll-smooth h-full">
+	<head>
+		<SEOHead
+			noIndex={noIndex}
+			title={title}
+			description={description}
+			type={type}
+			ogImage={ogImage}
+			datePublished={datePublished}
+			dateModified={dateModified}
+		/>
+	</head>
+	<body
+		class="relative scroll-m-4 w-full min-h-screen h-full bg-zinc-950 text-white font-sans"
+	>
+		<slot />
+	</body>
+</html>

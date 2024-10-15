@@ -1,16 +1,46 @@
 ---
-import MainLayout from "@/layouts/MainLayout.astro"
-import { getAllPosts } from "@/utils/getPosts"
-
-const posts = await getAllPosts("posts")
+import CommunitiesList from "@/components/CommunitiesList.astro"
+import Container from "@/components/Container.astro"
+import GroupsList from "@/components/GroupsList.astro"
+import Nav from "@/components/Nav.astro"
+import Canvas from "@/components/ui/Canvas.astro"
+import H2PresentSection from "@/components/ui/H2PresentSection.astro"
+import Title from "@/components/ui/Title.astro"
+import JustLayout from "@/layouts/JustLayout.astro"
 ---
 
-<MainLayout>
-	<h1 class="text-6xl font-black tracking-tighter">
-		Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti, vitae.
-	</h1>
+<JustLayout>
+	<Nav />
+	<div
+		class="relative w-full h-[calc(40%+72px)] md:h-[calc(55%+72px)] overflow-hidden flex flex-col justify-center rounded-b-[60px]"
+	>
+		<Container>
+			<Title />
+		</Container>
+		<Canvas />
+	</div>
 
-	<a href="/posts">Все посты</a>
-	<a href="/categories">Все категории</a>
-	<a href="/tags">Все теги</a>
-</MainLayout>
+	<Container>
+		<main class="flex flex-col gap-20 py-20">
+			<section>
+				<H2PresentSection icon="mdi:account-group">
+					<Fragment slot="name">Из разных сообществ</Fragment>
+					<Fragment slot="p"
+						>АП принимает все сообщества, входящие в 12-ти шаговые программы. Мы рады
+						всем!</Fragment
+					>
+				</H2PresentSection>
+				<CommunitiesList />
+			</section>
+			<section id="groups">
+				<H2PresentSection icon="mdi:telegram">
+					<Fragment slot="name">Онлайн группы</Fragment>
+					<Fragment slot="p"
+						>АП ведут встречи по проблеме СДВГ, лени и прокрастинации.</Fragment
+					>
+				</H2PresentSection>
+				<GroupsList />
+			</section>
+		</main>
+	</Container>
+</JustLayout>

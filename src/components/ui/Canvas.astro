@@ -1,0 +1,55 @@
+---
+
+---
+
+<canvas
+	id="gradient-canvas"
+	class="-z-[1] inset-0 absolute w-full h-auto"
+	data-transition-in
+>
+</canvas>
+
+<style>
+	#gradient-canvas.isLoaded {
+		opacity: 1;
+		transition: opacity 1.8s ease-in 50ms;
+	}
+
+	#gradient-canvas.isLoaded::after {
+		transition: transform 1s 1s;
+		transform: translateX(-50%) scaleY(0.995);
+	}
+
+	#gradient-canvas {
+		/* clip-path: circle(70% at 50% 30%); */
+		--gradient-color-1: #ffcb57;
+		--gradient-color-2: #90e0ff;
+		--gradient-color-3: #ff333d;
+		--gradient-color-4: #a960ee;
+
+		/* --gradient-color-1: #a960ee;
+			--gradient-color-2: #ff333d;
+			--gradient-color-3: #90e0ff;
+			--gradient-color-4: #ffcb57; */
+
+		/* --gradient-color-1: #c3e4ff;
+			--gradient-color-2: #6ec3f4;
+			--gradient-color-3: #eae2ff;
+			--gradient-color-4: #b9beff; */
+
+		/* --gradient-color-1: #a8e6cf;
+			--gradient-color-2: #81c784;
+			--gradient-color-3: #4caf50;
+			--gradient-color-4: #388e3c; */
+
+		/* --gradient-color-1: #ff9a8b; 
+			--gradient-color-2: #ff6a88; 
+			--gradient-color-3: #ff99ac; 
+			--gradient-color-4: #ffc7ce;  */
+	}
+</style>
+<script>
+	import { Gradient } from "@/utils/libs/gradient"
+	const gradient = new Gradient()
+	gradient.initGradient("#gradient-canvas")
+</script>

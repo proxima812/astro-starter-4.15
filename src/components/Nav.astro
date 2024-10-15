@@ -1,0 +1,47 @@
+---
+import { links } from "@/data/links"
+import Container from "./Container.astro"
+import Logo from "./Logo.astro"
+import { Icon } from 'astro-icon/components'
+---
+
+<header
+	class="fixed z-10 top-0 left-0 right-0 transition-all duration-300 bg-transparent py-5"
+>
+	<Container>
+		<div class="flex justify-between items-center">
+			<Logo />
+			<nav id="nav" class="hidden md:flex space-x-4 text-white">
+				{
+					links &&
+						links.map(link => (
+							<a class="flex gap-1 items-center" href={link.href}>
+                {link.mdi && <Icon name={link.mdi} />}
+								{link.label}
+							</a>
+						))
+				}
+			</nav>
+		</div>
+	</Container>
+</header>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const header = document.querySelector("header")
+		const nav = document.querySelector("#nav")
+		const path = document.querySelector("#path")
+
+		const handleScroll = () => {
+			if (window.scrollY > 30) {
+				header.classList.add("bg-zinc-900", "py-4")
+				header.classList.remove("bg-transparent", "py-5")
+			} else {
+				header.classList.add("bg-transparent", "py-5")
+				header.classList.remove("bg-zinc-900", "py-4")
+			}
+		}
+
+		window.addEventListener("scroll", handleScroll)
+	})
+</script>

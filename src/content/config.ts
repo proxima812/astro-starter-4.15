@@ -15,4 +15,16 @@ const posts = defineCollection({
 	},
 })
 
-export const collections = { posts }
+const groups = defineCollection({
+	schema: () => {
+		z.object({
+			title: z.string(),
+			description: z.string().optional(),
+			time: z.string(),
+			format: z.string(),
+			link: z.string(),
+		})
+	},
+})
+
+export const collections = { posts, groups }
